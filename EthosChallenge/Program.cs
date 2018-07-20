@@ -7,15 +7,12 @@ namespace EthosChallenge
 {
     class Program
     {
-        private static readonly CultureInfo FrCulture = new CultureInfo("fr-FR");
-        private static readonly CultureInfo UsCulture = new CultureInfo("en-US");
-
         static void Main(string[] args)
         {
             InputRequest userData = null;
             try
             {
-                 userData = InputRequestFabric.Parse(args, UsCulture);
+                 userData = InputRequestFabric.Parse(args, CultureInfo.CurrentCulture);
             }
             catch
             {
