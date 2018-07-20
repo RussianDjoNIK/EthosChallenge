@@ -44,41 +44,6 @@ namespace EthosChallenge
                 var currentArgValue = input[i];
                 object parsedValue = null;
 
-                // Loop for evaluating value of new property
-                while (isNewProperty)
-                {
-                    currentArgValue = input[i];
-                    var argValue = currentArgValue.Trim(optionalSymbols);
-                    // escape optional symbols in the middle of the value
-                    foreach (var optionalSymbol in optionalSymbols)
-                    {
-                        argValue = argValue.Replace(optionalSymbol.ToString(), "");
-                    }
-
-                    try
-                    {   
-                        parsedValue = Convert.ChangeType(argValue, property.PropertyType, culture);
-                        Debug.WriteLine($"For {property.Name} parsed value is {parsedValue}");
-                        currentArgValue = argValue;
-                        i++;
-                    }
-                    catch
-                    {
-                        Debug.WriteLine($"Failed {argValue}");
-                        isNewProperty = false;
-                    }
-
-                    if (i >= inputParamsLen - 1)
-                    {
-                        break;
-                    }
-                }
-
-                if (property != null)
-                {
-                    property.SetValue(result, Convert.ChangeType(parsedValue, property.PropertyType), null);
-                }
-
                 // Loop for matching option keys
                 for (var j = props.Count - 1; j >= 0; j--)
                 {
@@ -97,6 +62,34 @@ namespace EthosChallenge
                     props.RemoveAt(j);
                     break;
                 }
+
+                // Loop for evaluating value of new property
+                while (isNewProperty && i < inputParamsLen - 1)
+                {
+                    currentArgValue = input[++i];
+                    var argValue = currentArgValue.Trim(optionalSymbols);
+                    // escape optional symbols in the middle of the value
+                    foreach (var optionalSymbol in optionalSymbols)
+                    {
+                        argValue = argValue.Replace(optionalSymbol.ToString(), "");
+                    }
+
+                    try
+                    {   
+                        parsedValue = Convert.ChangeType(argValue, property.PropertyType, culture);
+                        Debug.WriteLine($"For {property.Name} parsed value is {parsedValue}");
+                        currentArgValue = argValue;
+                    }
+                    catch
+                    {
+                        Debug.WriteLine($"Failed {argValue}");
+                        isNewProperty = false;
+                        i--;    // roll back to previous input param since current was failed
+                    }
+                }
+
+                property.SetValue(result, Convert.ChangeType(parsedValue, property.PropertyType), null);
+                
             }
 
             return result;
