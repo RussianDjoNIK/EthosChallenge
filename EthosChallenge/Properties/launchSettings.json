@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "EthosChallenge": {
+      "commandName": "Project",
+      "commandLineArgs": "\"amount:\", \"100000\" \"interest:\" \"5.5 %\" \"downpayment:\" \"20000\" \"term:\" \"30\""
+    }
+  }
+}
