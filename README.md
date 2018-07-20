@@ -8,7 +8,9 @@ Ethos Lending Coding Challenge
 # Instruction
 There are a few test where you'll see Expected/Unexpected behaviour.
 To use it as console app from command line it is necessary to put at least 4 parameters:
-* amount
+* amount with decimal value
 * interest
 * downpayment
 * term
+
+All parameters should have value depends of current CurrentCulture it can be 100,000 (for en-US) or 100 000 (for fr-FR)
